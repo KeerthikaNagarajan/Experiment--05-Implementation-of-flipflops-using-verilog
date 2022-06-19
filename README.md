@@ -124,12 +124,12 @@ RegisterNumber: Keerthika.N
 module sr (q,qbar,s,r,clk);
 input s,r,clk;
 output q,qbar;
-wire nand1_out;
-wire nand2_out;
-nand(nand1_out,clk,s);
-nand(nand2_out,clk,r);
-nand(q,nand1_out,qbar);
-nand(qbar,nand2_out,q);
+wire n1;
+wire n2;
+nand(n1,s,clk);
+nand(n2,r,clk);
+nand(q,n1,qbar);
+nand(qbar,n2,q);
 endmodule
 ```
 ### RTL LOGIC FOR FLIPFLOPS 
@@ -142,12 +142,12 @@ endmodule
 module jk(q,qbar,k,j,clk);
 input j,k,clk;
 output q,qbar;
-wire nand1_out;
-wire nand2_out;
-nand(nand1_out,j,clk,qbar);
-nand(nand2_out,k,clk,q);
-nand(q,nand1_out,qbar,qbar);
-nand(qbar,nand2_out,q);
+wire n1;
+wire n2;
+nand(n1,j,clk,qbar);
+nand(n2,k,clk,q);
+nand(q,n1,qbar);
+nand(qbar,n2,q);
 endmodule
 ```
 ### RTL LOGIC FOR FLIPFLOPS 
@@ -157,14 +157,15 @@ endmodule
 
 ### D FLIPFLOP:
 ```
-module d(q,qbar,d1,clk);
-input d1,clk;
+module d(q,qbar,D,clk);
+input D,clk;
 output q,qbar;
+assign Dbar=~D;
 wire n1;
 wire n2;
-not(x,d1);
-nand(n1,clk,d1);
-nand(n2,clk,x);
+not(x,D);
+nand(n1,D,clk);
+nand(n2,Dbar,clk);
 nand(q,n2,qbar);
 nand(qbar,n1,q);
 endmodule 
@@ -176,12 +177,12 @@ endmodule
 
 ### T FLIPFLOP:
 ```
-module tff(t,qbar,q,clk);
+module tf(t,qbar,q,clk);
 input t,clk;
 output q,qbar;
 wire n1,n2;
-nand(n1,t,clk,qbar);
-nand(n2,clk,t,q);
+nand(n1,t,clk);
+nand(n2,t,clk);
 nand(q,n1,qbar);
 nand(qbar,n2,q);
 endmodule
